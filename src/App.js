@@ -1,12 +1,6 @@
-import AppHttps from "./httpRequisiçoes";
+import RoutesApp from "./routes";
 
 function App() {
-  return (
-    <div className="App">
-      <AppHttps/>
-<h1>App Tarcisio</h1>
-    </div>
-  );
+  return ( <div className="App"> <RoutesApp/> </div>);
 }
-
 export default App;
