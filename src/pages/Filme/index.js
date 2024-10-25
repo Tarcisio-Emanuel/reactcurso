@@ -40,14 +40,13 @@ export default function Filme() {
 
 
    function salvarFilme(){
-      alert(123)
       const minhaLista =  localStorage.getItem(process.env.REACT_APP_CHAVE);
 
       let filmesSalvo = JSON.parse(minhaLista) || [];
       const hasFilme = filmesSalvo.some((filmeS) => filmeS.id === filme.id )
 
       if(hasFilme){
-         alert("essefilme á esta na lista")
+         alert("esse filme já esta na lista")
       }
 
       filmesSalvo.push(filme);
