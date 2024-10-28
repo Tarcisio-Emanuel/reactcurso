@@ -1,10 +1,9 @@
 import './filme-info.css';
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from '../../services/api';
-
+import { toast } from "react-toastify";
 export default function Filme() {
-
 
    const { id } = useParams()
    const navigate = useNavigate()
@@ -13,7 +12,7 @@ export default function Filme() {
 
    useEffect(() => {
 
-      async function loadFilmes(){
+      async function loadFilmes() {
          await api.get(`/movie/${id}`, {
             params: {
                api_key: process.env.REACT_APP_KEY,
@@ -25,8 +24,8 @@ export default function Filme() {
                setLoading(false);
             })
             .catch(() => {
-               console.log("Filme não encontrado")
-               navigate("/", {replace: true})
+               // console.log("Filme não encontrado")
+               navigate("/", { replace: true })
                return
             })
       }
@@ -36,22 +35,24 @@ export default function Filme() {
       return () => {
          console.log('component foi desmontado')
       }
-   },[navigate, id])
+   }, [navigate, id])
 
+// //////////////////////////////////////////////////////////////////
 
-   function salvarFilme(){
-      const minhaLista =  localStorage.getItem(process.env.REACT_APP_CHAVE);
+   function salvarFilme() {
+      const minhaLista = localStorage.getItem(process.env.REACT_APP_CHAVE);
 
-      let filmesSalvo = JSON.parse(minhaLista) || [];
-      const hasFilme = filmesSalvo.some((filmeS) => filmeS.id === filme.id )
+      let filmesSalvos = JSON.parse(minhaLista) || [];
+      const hasFilme = filmesSalvos.some((filmeSalvo) => filmeSalvo.id === filme.id)
 
-      if(hasFilme){
-         alert("esse filme já esta na lista")
+      if (hasFilme) {
+         toast.warn("esse filme já esta na lista")
+         return;
       }
 
-      filmesSalvo.push(filme);
-      localStorage.setItem(process.env.REACT_APP_CHAVE, JSON.stringify(filmesSalvo))
-      alert("Filme salvo com sucesso")
+      filmesSalvos.push(filme);
+      localStorage.setItem(process.env.REACT_APP_CHAVE, JSON.stringify(filmesSalvos))
+      toast.success("Filme salvo com sucesso")
    }
 
 
@@ -64,7 +65,7 @@ export default function Filme() {
    }
 
    return (
-      
+
       <div className="filme-info">
          <h1>{filme.title}</h1>
          <img src={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`} alt={filme.title} />
@@ -80,9 +81,5 @@ export default function Filme() {
          </div>
 
       </div>
-
-
-
-
    )
 }
